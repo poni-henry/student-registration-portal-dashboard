@@ -1,0 +1,20 @@
+.login-container {
+    width: 400px; /* Adjust width as needed */
+    margin: 50px auto; /* Center the container horizontally */
+    text-align: center; /* Center content within the container */
+}
+
+.logo {
+    display: block; /* Ensure image displays on a new line */
+    margin-bottom: 20px; /* Add spacing below the logo */
+}
+
+.forgot-and-signup {
+    margin-top: 20px; /* Add spacing above links */
+}
+
+.forgot-and-signup a {
+    margin-right: 10px; /* Add spacing between links */
+    text-decoration: none; /* Remove underline from links */
+    color: #007bff; /* Set link color (blue) */
+}

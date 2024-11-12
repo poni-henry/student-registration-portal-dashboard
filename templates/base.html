@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.bundle.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Student Registration Portal</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #f0f0f0;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+header p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+header button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+nav {
+  text-align: center;
+  padding: 10px;
+}
+
+nav a {
+  padding: 10px;
+  text-decoration: none;
+  color: #000;
+}
+  header button {
+    border-radius: 5px; /* Add rounded corners */
+  }
+
+  header button:hover {
+    background-color: #3e8e41; /* Change color on hover */
+  }
+
+  main section {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    padding: 20px 30px; /* Add some extra padding */
+  }
+
+  nav a {
+    padding: 10px 20px; /* Increase padding for better spacing */
+  }
+
+  nav a:hover {
+    color: #333; /* Change color on hover */
+  }
+
+  nav a.active { /* Add optional styling for active links */
+    border-bottom: 2px solid #4CAF50;
+  }
+  </style>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Student Registration Portal</h1>
+    <p>A short and captivating description of what your application does.</p>
+    <button type="submit">Login</button>
+  </header>
+
+  <main>
+    <section>
+      <h2>About Your Application</h2>
+      <p>Explain the purpose and benefits of your application in a clear and concise way.</p>
+      <h2>About the Department of Computer Science and Information Technology</h2>
+      <p>University of Juba established the Computer Studies Centre (CSC) in July 1996. In accordance with the resolution of the Senate and the authorization of University of Juba Council (statute number 15). The Centre was opened with the latest technical specifications and its main aim was to meet the practical requirement for short and intermediate Computer Skills training courses for government and private institutions as well as individual applicants. Following the increase in the demand for computer graduates, the Centre was upgraded in April 2009 to a full School of Computer Science and Information Technology (SCSIT) offering two Bachelor of Science degree programs (5 years) in either Computer Science or Inform
+      </p>
+    </section>
+    </main>
+
+  <form action="{% url 'login' %}" method="post">
+    <div class="form-group">
+      <button type="submit">Login</button>
+    </div>
+  </form>
+
+  <nav>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</body>
+</html>

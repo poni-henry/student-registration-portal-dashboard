@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Registration Portal Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .nav {
+            text-align: center;
+            padding: 10px;
+        }
+        .nav a {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #000;
+            margin: 0 10px;
+        }
+        .nav a:hover {
+            color: #333;
+        }
+        .nav a.active {
+            border-bottom: 2px solid #4CAF50;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #5678d8;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 100px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group button {
+            width: 98%;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        function showTab(tabId) {
+            var tabs = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            document.getElementById(tabId).classList.add('active');
+            var navLinks = document.querySelectorAll('.nav a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            document.querySelector(`.nav a[href='#${tabId}']`).classList.add('active');
+        }
+
+        function submitForm(formId, nextTabId) {
+            var form = document.getElementById(formId);
+            var formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    showTab(nextTabId);
+                } else {
+                    console.error('Error submitting form');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+</head>
+<body onload="showTab('register')">
+    <header class="header">
+        <h1>Student Registration Portal</h1>
+        <h2>Welcome, {{ username }}</h2>
+    </header>
+
+    <nav class="nav">
+        <a href="#register" onclick="showTab('register')">Register</a>
+        <a href="#enroll" onclick="showTab('enroll')">Enroll</a>
+        <a href="#fees" onclick="showTab('fees')">Financial Statement</a>
+        <a href="#pending" onclick="showTab('pending')">Registration Status</a>
+    </nav>
+    
+    <div id="register" class="tab-content">
+        <section class="container">
+            <img src="{% static 'admin/img/download.png' %}" alt="Logo" class="logo">
+            <h1>Student Registration</h1>
+            <p>Academic Year: 2024/2025</p>
+            <form id="registrationForm" action="{% url 'register' %}" method="post" enctype="multipart/form-data" onsubmit="event.preventDefault(); submitForm('registrationForm', 'enroll');">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="student_name">Student Name:</label>
+                    <input type="text" name="student_name" id="student_name" value="{{ student_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="registration_number">Registration Number:</label>
+                    <input type="text" name="registration_number" id="registration_number" value="{{ registration_number }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="student_index_number">Student Index Number:</label>
+                    <input type="text" name="student_index_number" id="student_index_number" value="{{ student_index_number }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact_no">Contact Number:</label>
+                    <input type="text" name="contact_no" id="contact_no" value="{{ contact_no }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">State:</label>
+                    <input type="text" name="state" id="state" value="{{ state }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="county">County:</label>
+                    <input type="text" name="county" id="county" value="{{ county }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="next_of_kin">Next of Kin:</label>
+                    <input type="text" name="next_of_kin" id="next_of_kin" value="{{ next_of_kin }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="next_of_kin_contact">Next of Kin Contact:</label>
+                    <input type="text" name="next_of_kin_contact" id="next_of_kin_contact" value="{{ next_of_kin_contact }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select name="gender" id="gender" value="{{ gender }}">
+                        <option value="female" {% if gender == 'female' %}selected{% endif %}>Female</option>
+                        <option value="male" {% if gender == 'male' %}selected{% endif %}>Male</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="admission">Admission:</label>
+                    <select name="admission" id="admission" value="{{ admission }}">
+                        <option value="general" {% if admission == 'general' %}selected{% endif %}>General</option>
+                        <option value="direct" {% if admission == 'direct' %}selected{% endif %}>Direct</option>
+                        <option value="upgrading" {% if admission == 'upgrading' %}selected{% endif %}>Upgrading</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date_of_birth">Date of Birth:</label>
+                    <input type="date" name="date_of_birth" id="date_of_birth" value="{{ date_of_birth }}" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Register</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div id="enroll" class="tab-content">
+        <section class="container">
+            <img src="{% static 'admin/img/download.png' %}" alt="Logo" class="logo">
+            <input type="hidden" name="department" value="{{ department }}">
+            <input type="hidden" name="program" value="{{ program }}">
+            
+            <form id="enrollFormCS" action="{% url 'enroll' %}" method="post" onsubmit="event.preventDefault(); submitForm('enrollFormCS', 'fees');">
+                {% csrf_token %}
+                <input type="hidden" name="department" value="Department of Computer Science">
+                <div class="form-group">
+                    <label for="program_cs">Program:</label>
+                    <select name="program" id="program_cs">
+                        <option value="Diploma in Computer Science">Diploma in Computer Science</option>
+                        <option value="Bachelor of Science in Computer Science">Bachelor of Science in Computer Science</option>
+                        <option value="Masters in Computer Science">Masters in Computer Science</option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <label for="year_of_study">Year of Study</label>
+                    <select name="year_of_study" id="year_of_study">
+                        <option value="Year 1">Year 1</option>
+                        <option value="Year 2">Year 2</option>
+                        <option value="Year 3">Year 3</option>
+                        <option value="Year 4">Year 4</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="semester">Semester</label>
+                    <select name="semester" id="semester">
+                        <option value="Semester 1">Semester 1</option>
+                        <option value="Semester 2">Semester 2</option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <button type="submit">Enroll</button>
+                </div>
+            </form>
+    
+            <h2>Department of Information Technology</h2>
+            <form id="enrollFormIT" action="{% url 'enroll' %}" method="post" onsubmit="event.preventDefault(); submitForm('enrollFormIT', 'fees');">
+                {% csrf_token %}
+                <input type="hidden" name="department" value="Department of Information Technology">
+                <div class="form-group">
+                    <label for="program_it">Program:</label>
+                    <select name="program" id="program_it">
+                        <option value="Diploma in Information Technology">Diploma in Information Technology</option>
+                        <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
+                        <option value="Masters in Information Technology">Masters in Information Technology</option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <label for="year_of_study">Year of Study</label>
+                    <select name="year_of_study" id="year_of_study">
+                        <option value="Year 1">Year 1</option>
+                        <option value="Year 2">Year 2</option>
+                        <option value="Year 3">Year 3</option>
+                        <option value="Year 4">Year 4</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="semester">Semester</label>
+                    <select name="semester" id="semester">
+                        <option value="Semester 1">Semester 1</option>
+                        <option value="Semester 2">Semester 2</option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <button type="submit">Enroll</button>
+                </div>
+            </form>
+        </section>
+    </div>
+    
+    <script>
+        function submitForm(formId, action) {
+            const form = document.getElementById(formId);
+            form.action = action;
+            form.submit();
+        }
+    </script>    
+
+    <div id="fees" class="tab-content">
+        <section class="container">
+            <img src="{% static 'admin/img/download.png' %}" alt="Logo" class="logo">
+            <h2>Financial Statement</h2>
+            <p>To complete your registration, please download the payment invoice and head over to a bank to make payments, upload the receipt you receive from the bank and come back to your portal to check your registration status once an administrator confirms your registration</p>
+            <a href="{% url 'download_receipt' %}">Download Invoice</a>
+        
+            <h2>Upload Bank Statement</h2>
+            <p>Please upload your payment recipt here</p>
+            <form id="bankStatementForm" method="post" enctype="multipart/form-data" action="{% url 'upload_bank_statement' %}" onsubmit="event.preventDefault(); submitForm('bankStatementForm', 'pending');">
+                {% csrf_token %}
+                {{ bank_statement_form.as_p }}
+                <div class="form-group">
+                    <button type="submit">Upload</button>
+                </div>
+            </form>            
+        </section>
+    </div>
+
+    <div id="pending" class="tab-content">
+        <section class="container">
+            <img src="{% static 'admin/img/download.png' %}" alt="Logo" class="logo">
+            <h2>Registration Status</h2>
+            <p>Check the status of your registration here.</p>
+            <p>Registration Status: {{ registration_status }}</p>
+        </section>
+    </div>
+
+    <div class="logout-button">
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+
+    <script>
+        // Initial tab display
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('enroll');
+        });
+
+        // Function to switch tabs
+        function showTab(tabId) {
+            var tabs = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            document.getElementById(tabId).classList.add('active');
+            var navLinks = document.querySelectorAll('.nav a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            document.querySelector(`.nav a[href='#${tabId}']`).classList.add('active');
+        }
+
+        // Function to submit forms via fetch API
+        function submitForm(formId, nextTabId) {
+            var form = document.getElementById(formId);
+            var formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    showTab(nextTabId);
+                } else {
+                    console.error('Error submitting form');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

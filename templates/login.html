@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Portal Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh; /* Adjusted to full viewport height */
+            flex-direction: column; /* Ensure header and container stack vertically */
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff; /* White background */
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px; /* Add margin below header */
+        }
+
+        .header img {
+            display: block;
+            margin: 0 auto 10px; /* Center the logo */
+            width: 100px; /* Adjust as needed */
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%; /* Ensure container takes full width of its parent */
+            padding: 20px;
+            border: 1px solid #5678d8;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: justify;
+            background-color: #ffffff; /* Ensure container background is white */
+        }
+
+        form {
+            width: 100%; /* Take full width of the container */
+            max-width: 400px; /* Limit form width for readability */
+            margin: 0 auto; /* Center the form horizontally */
+            padding: 0 20px; /* Add padding to form */
+        }
+
+        form input {
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .signup-link a {
+            text-decoration: none;
+            color: #1e88e5; /* Blue color for signup link */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section -->
+    <header class="header">
+        {% load static %}
+        <img src="{% static 'admin/img/download.png' %}" alt="Logo">
+        <h1>Student Portal Login</h1>
+    </header>
+
+    <!-- Main content -->
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if form.errors %}
+                <div class="error">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            {% if error_message %}
+                <div class="error">
+                    {{ error_message }}
+                </div>
+            {% endif %}
+            <button type="submit">Login</button>
+        </form>
+        <div class="signup-link">
+            <a href="{% url 'signup' %}">Sign Up</a>
+        </div>
+    </div>
+</body>
+</html>

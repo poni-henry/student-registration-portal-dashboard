@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Department Programs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto; /* Center the logo and add space below it */
+            width: 100px; /* Adjust the logo size */
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .department {
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px; /* Increased margin for better spacing */
+        }
+        .form-group select,
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px; /* Add space between select and button */
+        }
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% load static %}
+        <img src="{% static 'admin/img/download.png' %}" alt="Logo" class="logo">
+        <div class="department">
+            <h2>Department of Computer Science</h2>
+            <form action="{% url 'enroll' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="department" value="Computer Science">
+                <div class="form-group">
+                    <select name="program">
+                        {% for program in cs_programs %}
+                            <option value="{{ program }}">{{ program }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Enroll</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="department">
+            <h2>Department of Information Technology</h2>
+            <form action="{% url 'enroll' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="department" value="Information Technology">
+                <div class="form-group">
+                    <select name="program">
+                        {% for program in it_programs %}
+                            <option value="{{ program }}">{{ program }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Enroll</button>
+                </div>
+            </form>
+        </div>
+        <!-- Logout button -->
+        <div class="logout-button">
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+def generate_invoice(request, department, program, year_of_study, semester,student_name,registration_number,student_index_number,contact_no,state,county,next_of_kin,next_of_kin_contact,gender, admission,date_of_birth):
+    # Create a BytesIO buffer to store the PDF
+    buffer = BytesIO()
+
+    # Create a PDF document
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+
+    # Invoice content
+    data = [
+        ['Department', department],
+        ['Program', program],
+        ['Year of Study', str(year_of_study)],
+        ['Semester', str(semester)],
+        ['Student Name', student_name],
+        ['Registration Number', str(registration_number)],
+        ['Student Index Number', str(student_index_number)],
+        ['Contact Number', str(contact_no)],
+        ['State', state],
+        ['County',county],
+        ['Next of Kin',next_of_kin],
+        ['Next of Kin Contact',str(next_of_kin_contact)],
+        ['Gender',gender],
+        ['Admission',admission],
+        ['Date of Birth',str(date_of_birth)],
+        # Add more details as needed
+    ]
+
+    # Create a table for the invoice content
+    table = Table(data)
+
+    # Add style to the table
+    style = TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                        ('GRID', (0, 0), (-1, -1), 1, colors.black)])
+
+    table.setStyle(style)
+
+    # Add table to the PDF document
+    doc.build([table])
+
+    # Rewind the buffer
+    buffer.seek(0)
+
+    # Create a response object with the PDF content
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
+
+    return response
+
+    @login_required
+def confirm_enrollment(request):
+    if request.method == 'POST':
+        department = request.POST.get('department')
+        program = request.POST.get('program')
+        year_of_study = request.POST.get('year_of_study')
+        semester = request.POST.get('semester')
+        # Redirect to the registration page with necessary parameters
+        return redirect('register_page', department=department, program=program, year_of_study=year_of_study, semester=semester)
+    return redirect('home')  # Redirect to home if not a POST request

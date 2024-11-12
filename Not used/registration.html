@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-columns {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input[type="text"],
+        .form-group button {
+            width: calc(100% - 22px); /* Adjusted width for input fields and buttons */
+            padding: 10px;
+            font-size: 16px;
+        }
+        .form-group button {
+            width: 100%;
+        }
+        .back-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% load static %}
+        <img src="{% static 'C:\Users\Poni\Desktop\Student_Registration_Portal\student_registration_portal\static\admin\img\download.png' %}" alt="Logo" class="logo">
+        <h1>Student Registration</h1>
+        <p>School: Computer Science and Information Technology</p>
+        <p>Department: {{ department }}</p>
+        <p>Program: {{ program }}</p>
+        <p>Year of Study: {{ year_of_study }}</p>
+        <p>Semester: {{ semester }}</p>
+        <p>Academic Year : 2024/2025</p>
+        <form action="{% url 'register_page' department=department program=program year_of_study=year_of_study semester=semester %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="department" value="{{ department }}">
+            <input type="hidden" name="program" value="{{ program }}">
+            <input type="hidden" name="year_of_study" value="{{ year_of_study }}">
+            <input type="hidden" name="semester" value="{{ semester }}">
+
+            <div class="form-group">
+                <label for="student_name">Student Name:</label>
+                <input type="text" name="student_name" id="student_name" required>
+            </div>
+            <div class="form-group">
+                <label for="registration_number">Registration Number:</label>
+                <input type="text" name="registration_number" id="registration_number" required>
+            </div>
+            <div class="form-group">
+                <label for="student_index_number">Student Index Number:</label>
+                <input type="text" name="student_index_number" id="student_index_number" required>
+            </div>  
+            <div class="form-group">
+                <label for="contact_no">Contact Number:</label>
+                <input type="text" name="contact_no" id="contact_no" required>
+            </div>
+ 
+            <div class="form-group">
+                <label for="state">State:</label>
+                <input type="text" name="state" id="state" required>
+            </div>
+            <div class="form-group">
+                <label for="county">County:</label>
+                <input type="text" name="county" id="county" required>
+            </div>
+            <div class="form-group">
+                <label for="next_of_kin">Next of Kin:</label>
+                <input type="text" name="next_of_kin" id="next_of_kin" required>
+            </div>
+            <div class="form-group">
+                <label for="next_of_kin_contact">Next of Kin Contact:</label>
+                <input type="text" name="next_of_kin_contact" id="next_of_kin_contact" required>
+            </div>
+                    <div class="form-columns">
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select name="gender" id="gender">
+                    <option value="1">Female</option>
+                    <option value="2">Male</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="admission">Admission</label>
+                <select name="admission" id="admission">
+                    <option value="1">General</option>
+                    <option value="2">Direct</option>
+                    <option value="3">Upgrading</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date_of_birth">Date of Birth:</label>
+                <input type="date" name="date_of_birth" id="date_of_birth" required>
+            </div>
+            
+        </div>
+
+            <!-- Fee payment section -->
+            <h2>Fee Payment</h2>
+            <p>Please make a payment of the registration fee at the bank before proceeding.</p>
+
+            <!-- Button to indicate payment made -->
+            <div class="form-group">
+                <button type="button" onclick="paymentMade()">Payment Made</button>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit">Register</button>
+            </div>
+        </form>
+        <!-- Back button -->
+        <div class="back-button">
+            <a href="#" onclick="history.back();">Back</a>
+        </div>
+        <!-- Logout button -->
+        <div class="logout-button">
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

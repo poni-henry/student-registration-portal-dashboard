@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enroll in Program</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+                display: block;
+                margin: 0 auto 20px auto; /* Center the logo and add space below it */
+                width: 100px; /* Adjust the logo size */
+            }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group select,
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .back-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% load static %}
+        <img src="{% static 'C:\Users\Poni\Desktop\Student_Registration_Portal\student_registration_portal\static\admin\img\download.png' %}" alt="Logo" class="logo">
+        <h1>Enroll in {{ program }}</h1>
+        <p>You have chosen to enroll in the {{ program }} program under the {{ department }} department.</p>
+        <form action="{% url 'confirm_enrollment' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="department" value="{{ department }}">
+            <input type="hidden" name="program" value="{{ program }}">
+            <div class="form-group">
+                <label for="year_of_study">Year of Study</label>
+                <select name="year_of_study" id="year_of_study">
+                    <option value="1">Year 1</option>
+                    <option value="2">Year 2</option>
+                    <option value="3">Year 3</option>
+                    <option value="4">Year 4</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="semester">Semester</label>
+                <select name="semester" id="semester">
+                    <option value="1">Semester 1</option>
+                    <option value="2">Semester 2</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit">Confirm Enrollment</button>
+            </div>
+        </form>
+        <!-- Back button -->
+        <div class="back-button">
+            <a href="#" onclick="history.back();">Back</a>
+        </div>
+        <!-- Logout button -->
+        <div class="logout-button">
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

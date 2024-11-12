@@ -128,7 +128,7 @@
     
     <div id="register" class="tab-content">
         <section class="container">
-            <img src="{% static 'admin/img/download.png' %}" alt="Logo" class="logo">
+            <img src="{% static 'admin/img/university-logo.png' %}" alt="Logo" class="logo">
             <h1>Student Registration</h1>
             <p>Academic Year: 2024/2025</p>
             <form id="registrationForm" action="{% url 'register' %}" method="post" enctype="multipart/form-data" onsubmit="event.preventDefault(); submitForm('registrationForm', 'enroll');">
@@ -193,7 +193,7 @@
 
     <div id="enroll" class="tab-content">
         <section class="container">
-            <img src="{% static 'admin/img/download.png' %}" alt="Logo" class="logo">
+            <img src="{% static 'admin/img/university-logo.png' %}" alt="Logo" class="logo">
             <input type="hidden" name="department" value="{{ department }}">
             <input type="hidden" name="program" value="{{ program }}">
             
@@ -280,7 +280,7 @@
 
     <div id="fees" class="tab-content">
         <section class="container">
-            <img src="{% static 'admin/img/download.png' %}" alt="Logo" class="logo">
+            <img src="{% static 'admin/img/university-logo.png' %}" alt="Logo" class="logo">
             <h2>Financial Statement</h2>
             <p>To complete your registration, please download the payment invoice and head over to a bank to make payments, upload the receipt you receive from the bank and come back to your portal to check your registration status once an administrator confirms your registration</p>
             <a href="{% url 'download_receipt' %}">Download Invoice</a>
@@ -299,7 +299,7 @@
 
     <div id="pending" class="tab-content">
         <section class="container">
-            <img src="{% static 'admin/img/download.png' %}" alt="Logo" class="logo">
+            <img src="{% static 'admin/img/university-logo.png' %}" alt="Logo" class="logo">
             <h2>Registration Status</h2>
             <p>Check the status of your registration here.</p>
             <p>Registration Status: {{ registration_status }}</p>
